@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registration Form</title>
+	<style>
+	body {
+		font-family: Arial, sans-serif;
+		background-color: #f4f4f4;
+		margin: 20px;
+	}
+	h1 {
+		text-align: center;
+		color: #333;
+		font-size: 32px;
+		margin-bottom: 20px;
+	}
+	table {
+		width: 60%;
+		margin: 0 auto;
+		background-color: #fff;
+		border-collapse: collapse;
+		box-shadow: 0 0 10px rgba(0,0,0,0.1);
+	}
+	td {
+		padding: 15px;
+		font-size: 18px;
+		color: #555;
+	}
+	th {
+		text-align: left;
+		padding: 15px;
+		background-color: #4CAF50;
+		color: white;
+		font-size: 20px;
+	}
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	select,
+	textarea {
+		width: 100%;
+		padding: 10px;
+		font-size: 16px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		box-sizing: border-box;
+	}
+	input[type="submit"],
+	input[type="reset"] {
+		background-color: #4CAF50;
+		color: white;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-size: 18px;
+	}
+	input[type="submit"]:hover,
+	input[type="reset"]:hover {
+		background-color: #45a04a;
+	}
+	textarea {
+		resize: vertical;
+		height: 100px;
+	}
+	.radio,
+	.checkbox {
+		width: 20px;
+		height: 20px;
+		vertical-align: middle;
+		margin-right: 8px;
+		cursor: pointer;
+	}
+	</style>
+</head>
+<body>
+	<h1>Registration Form</h1>
+	<form action="#" method="post">
+		<table>
+			<tr>
+				<th colspan="2">Personal Information</th>
+			</tr>
+			<tr>
+				<td>First Name:</td>
+				<td><input type="text" name="firstname" placeholder="Enter your first name"></td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><input type="email" name="email" placeholder="Enter your email"></td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td><input type="password" name="password" placeholder="Enter your password"></td>
+			</tr>
+			<tr>
+				<td>Gender:</td>
+				<td>
+					<input type="radio" name="gender" value="male" class="radio">Male
+					<input type="radio" name="gender" value="female" class="radio">Female
+				</td>
+			</tr>
+			<tr>
+				<td>Country:</td>
+				<td>
+					<select name="country">
+						<option value="in">India</option>
+						<option value="uk">United Kingdom</option>
+						<option value="us">United States</option>
+						<option value="ca">Canada</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Hobbies:</td>
+				<td>
+					<input type="checkbox" name="hobbies" value="reading" class="checkbox">Reading
+					<input type="checkbox" name="hobbies" value="singing" class="checkbox">Singing
+					<input type="checkbox" name="hobbies" value="dancing" class="checkbox">Dancing
+				</td>
+			</tr>
+			<tr>
+				<td>Address:</td>
+				<td><textarea name="address" placeholder="Enter your address"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;">
+					<input type="submit" value="Register">
+					<input type="reset" value="Reset">
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

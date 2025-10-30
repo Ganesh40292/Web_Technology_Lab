@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AJAX and JSON Examples by Ganesh Prasad - 4MW23CS040</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    button { margin: 5px 0; padding: 8px 12px; }
+    .content, .jsonContent { margin-top: 10px; padding: 10px; border: 1px solid #ddd; }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+  <h2>Ajax without jQuery</h2>
+  <button onclick="loadContent()">Load Text Content (No jQuery)</button>
+  <div id="content" class="content">Content from the file will load here.</div>
+
+  <h2>Ajax with jQuery</h2>
+  <button id="loadBtn">Load Text Content (jQuery)</button>
+  <div id="jqueryContent" class="content">Content from the file will load here.</div>
+
+  <h2>getJSON() Method</h2>
+  <button id="loadJsonBtn">Load JSON Data (jQuery)</button>
+  <div id="jsonContent" class="jsonContent">JSON data will load here.</div>
+
+  <h2>parseJSON() Method</h2>
+  <button id="parseJsonBtn">Parse JSON</button>
+  <div id="parseContent" class="jsonContent">Parsed JSON data will appear here.</div>
+
+  <script>
+    function loadContent() 
+    {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "sample.txt", true);
+      xhr.onload = function() 
+      {
+        if (xhr.status === 200) 
+        {
+          document.getElementById("content").innerText = xhr.responseText;
+        }
+      };
+      xhr.send();
+    }
+ 
+    $('#loadBtn').click(function() 
+    {
+      $.ajax({
+        url: 'sample.txt',
+        method: 'GET',
+        success: function(data) 
+        {
+          $('#jqueryContent').text(data);
+        }
+      });
+    });
+
+    $('#loadJsonBtn').click(function() 
+    {
+      $.getJSON('data.json', function(data) 
+      {
+        $('#jsonContent').html(`
+          <p>Name: ${data.name}</p>
+          <p>Age: ${data.age}</p>
+          <p>Country: ${data.country}</p>
+        `);
+      });
+    });
+
+    $('#parseJsonBtn').click(function() 
+    {
+      const jsonString = '{"name": "Rajesh", "age": 30, "country": "India"}';
+      const jsonObject = $.parseJSON(jsonString);
+      $('#parseContent').html(`
+        <p>Name: ${jsonObject.name}</p>
+        <p>Age: ${jsonObject.age}</p>
+        <p>Country: ${jsonObject.country}</p>
+      `);
+    });
+  </script>
+
+</body>
+</html>

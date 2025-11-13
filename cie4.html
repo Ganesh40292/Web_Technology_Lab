@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sports Registration Form</title>
+	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			background: linear-gradient(135deg, #1abc9c, #16a085);
+			margin: 0;
+			padding: 40px 0;
+			color: #333;
+		}
+		h1 {
+			text-align: center;
+			color: #fff;
+			font-size: 38px;
+			margin-bottom: 30px;
+			letter-spacing: 1px;
+			text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+		}
+		form {
+			background-color: #ffffff;
+			width: 70%;
+			max-width: 800px;
+			margin: auto;
+			padding: 30px 40px;
+			border-radius: 12px;
+			box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		th {
+			text-align: left;
+			padding: 15px;
+			background: #16a085;
+			color: #fff;
+			font-size: 22px;
+			border-radius: 8px 8px 0 0;
+		}
+		td {
+			padding: 14px 12px;
+			font-size: 17px;
+			color: #555;
+		}
+		input[type="text"],
+		input[type="email"],
+		input[type="password"],
+		input[type="number"],
+		select,
+		textarea {
+			width: 100%;
+			padding: 10px;
+			font-size: 16px;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			box-sizing: border-box;
+			transition: all 0.3s ease;
+		}
+		input:focus,
+		select:focus,
+		textarea:focus {
+			border-color: #1abc9c;
+			box-shadow: 0 0 5px rgba(26,188,156,0.5);
+			outline: none;
+		}
+		textarea {
+			resize: vertical;
+			height: 100px;
+		}
+		.radio, .checkbox {
+			width: 18px;
+			height: 18px;
+			vertical-align: middle;
+			margin-right: 8px;
+			cursor: pointer;
+			accent-color: #16a085;
+		}
+		input[type="submit"],
+		input[type="reset"] {
+			background-color: #16a085;
+			color: white;
+			padding: 12px 25px;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			font-size: 18px;
+			margin: 10px;
+			transition: all 0.3s ease;
+		}
+		input[type="submit"]:hover,
+		input[type="reset"]:hover {
+			background-color: #138f75;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+		}
+		td[colspan="2"] {
+			text-align: center;
+		}
+		.footer-note {
+			text-align: center;
+			margin-top: 15px;
+			font-size: 15px;
+			color: #f8f8f8;
+		}
+	</style>
+</head>
+<body>
+	<h1>🏆 Sports Registration Form</h1>
+	<form action="#" method="post">
+		<table>
+			<tr>
+				<th colspan="2">Athlete Information</th>
+			</tr>
+			<tr>
+				<td>Full Name:</td>
+				<td><input type="text" name="fullname" placeholder="Enter your full name" required></td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><input type="email" name="email" placeholder="Enter your email" required></td>
+			</tr>
+			<tr>
+				<td>Age:</td>
+				<td><input type="number" name="age" placeholder="Enter your age" min="10" max="70"></td>
+			</tr>
+			<tr>
+				<td>Gender:</td>
+				<td>
+					<input type="radio" name="gender" value="male" class="radio">Male
+					<input type="radio" name="gender" value="female" class="radio">Female
+					<input type="radio" name="gender" value="other" class="radio">Other
+				</td>
+			</tr>
+			<tr>
+				<td>Sport Category:</td>
+				<td>
+					<select name="sport" required>
+						<option value="">-- Select Your Sport --</option>
+						<option value="football">⚽ Football</option>
+						<option value="basketball">🏀 Basketball</option>
+						<option value="cricket">🏏 Cricket</option>
+						<option value="swimming">🏊 Swimming</option>
+						<option value="tennis">🎾 Tennis</option>
+						<option value="volleyball">🏐 Volleyball</option>
+						<option value="athletics">🏃 Athletics</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Preferred Position / Event:</td>
+				<td><input type="text" name="position" placeholder="e.g., Goalkeeper, Setter, Striker"></td>
+			</tr>
+			<tr>
+				<td>Experience Level:</td>
+				<td>
+					<select name="experience">
+						<option value="beginner">Beginner</option>
+						<option value="intermediate">Intermediate</option>
+						<option value="advanced">Advanced</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Hobbies / Interests:</td>
+				<td>
+					<input type="checkbox" name="hobbies" value="fitness" class="checkbox">Fitness
+					<input type="checkbox" name="hobbies" value="travel" class="checkbox">Travel
+					<input type="checkbox" name="hobbies" value="teamwork" class="checkbox">Teamwork
+				</td>
+			</tr>
+			<tr>
+				<td>Address:</td>
+				<td><textarea name="address" placeholder="Enter your address"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="submit" value="Register Now">
+					<input type="reset" value="Reset">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<div class="footer-note">© 2025 Sports Club | Designed for CIE Project 🏅</div>
+</body>
+</html>

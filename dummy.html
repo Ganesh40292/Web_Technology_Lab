@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Simple Calculator</title>
+<style>
+body 
+{
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background:linear-gradient(360 deg,#70e1f5 #ffd194);
+}
+
+.calculator 
+{
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 20px;
+  width: 300px;
+  text-align:center;
+}
+
+input
+{
+  width: 80%; 
+  font-size: 1.5em;
+  margin: 10px 0;
+  padding: 10px;
+  border:1px solid #ccc;
+  box-radius: 5px;
+}
+
+button 
+{
+    padding:10px;
+    margin:5px;
+    width:45%;
+    cursor:pointer;
+    background-color:blue;
+    color:white;
+    border:none;
+    border-radius:5px;
+    transition:background-color 0.3s,transform 0.2s;
+}
+
+button:hover 
+{
+  background-color: #45a049;
+  transform:scale(1.05);
+}
+
+#result
+{
+    margin-top:20px;
+    font-size:20px;
+    color:#333;
+}
+
+.operator 
+{
+  background-color: #f0a030;
+  color: white;
+}
+
+.operator:hover 
+{
+  background-color: #12ed62;
+}
+</style>
+</head>
+<body>
+<div class="calculator">
+  <input type="text" id="display" readonly>
+  <div class="buttons">
+    <button onclick="appendToDisplay('7')">7</button>
+    <button onclick="appendToDisplay('8')">8</button>
+    <button onclick="appendToDisplay('9')">9</button>
+    <button class="operator" onclick="setOperation('+')">&plus;</button>
+
+    <button onclick="appendToDisplay('4')">4</button>
+    <button onclick="appendToDisplay('5')">5</button>
+    <button onclick="appendToDisplay('6')">6</button>
+    <button class="operator" onclick="setOperation('-')">&minus;</button>
+
+    <button onclick="appendToDisplay('1')">1</button>
+    <button onclick="appendToDisplay('2')">2</button>
+    <button onclick="appendToDisplay('3')">3</button>
+    <button class="operator" onclick="setOperation('*')">&times;</button>
+
+    <button onclick="appendToDisplay('0')">0</button>
+    <button onclick="appendToDisplay('.')">.</button>
+    <button class="operator" onclick="calculate()">&equals;</button>
+    <button class="operator" onclick="setOperation('/')">&divide;</button>
+
+    <button class="operator" onclick="setOperation('%')">%</button>
+    <button class="operator" onclick="setOperation('^')">x<sup>y</sup></button>
+    <button class="operator" onclick="squareRoot()">√</button>
+    <button class="operator" onclick="square()">x<sup>2</sup></button>
+    <button onclick="clearDisplay()">C</button>
+  </div>
+  <p><b>Ganesh Prasad</b></p>
+    <p><b>4MW23CS040</b></p>
+</div>
+
+<script>
+let display = document.getElementById('display');
+let currentValue = '';
+let operation = '';
+let previousValue = '';
+
+function appendToDisplay(value) {
+  currentValue += value;
+  display.value = currentValue;
+}
+
+function clearDisplay() {
+  currentValue = '';
+  operation = '';
+  previousValue = '';
+  display.value = '';
+}
+
+function setOperation(op) {
+  if (currentValue !== '') {
+    calculate();
+  }
+  operation = op;
+  previousValue = currentValue;
+  currentValue = '';
+}
+
+function calculate() {
+  if (previousValue !== '' && currentValue !== '') {
+    let result;
+    const prev = parseFloat(previousValue);
+    const current = parseFloat(currentValue);
+
+    switch(operation) {
+      case '+':
+        result = prev + current;
+        break;
+      case '-':
+        result = prev - current;
+        break;
+      case '*':
+        result = prev * current;
+        break;
+      case '/':
+        result = prev / current;
+        break;
+      case '%':
+        result = prev % current;
+        break;
+      case '^':
+        result = Math.pow(prev, current);
+        break;
+    }
+
+    display.value = result;
+    previousValue = result.toString();
+    currentValue = '';
+    operation = '';
+  }
+}
+
+function squareRoot() {
+  if (currentValue !== '') {
+    const result = Math.sqrt(parseFloat(currentValue));
+    display.value = result;
+    currentValue = result.toString();
+  }
+}
+
+function square() {
+  if (currentValue !== '') {
+    const result = Math.pow(parseFloat(currentValue), 2);
+    display.value = result;
+    currentValue = result.toString();
+  }
+}
+</script>
+</body>
+</html>

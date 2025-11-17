@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>All-in-One Animated Calculator (CIE Ready)</title>
+<style>
+  :root
+{
+    --bg1:#70e1f5;
+    --bg2:#ffd194;
+    --glass-bg: rgba(255,255,255,0.55);
+    --panel-bg: rgba(255,255,255,0.9);
+    --accent:#1dd1a1;
+    --accent-2:#ff9f43;
+    --error:#ee5253;
+    --text-dark:#0b0b0b;
+    --text-light:#f4f6f8;
+    --glass-border: rgba(255,255,255,0.35);
+    --glass-shadow: 0 8px 30px rgba(15,15,15,0.12);
+    --glass-blur: 8px;
+  }
+
+  .dark
+  {
+    --glass-bg: rgba(9,10,11,0.55);
+    --panel-bg: rgba(9,10,11,0.9);
+    --text-dark: #f4f6f8;
+    --text-light: #0b0b0b;
+    --glass-border: rgba(255,255,255,0.06);
+    --glass-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  }
+
+  html,body
+  {
+    height:100%;
+  }
+  body
+  {
+    margin:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(45deg,var(--bg1),var(--bg2));
+    background-size: 300% 300%;
+    animation: bgShift 10s ease infinite;
+    color:var(--text-dark);
+  }
+  @keyframes bgShift
+  {
+    0%
+    {
+        background-position:0% 50%
+    }
+    50%
+    {
+        background-position:100% 50%
+    }
+    100%
+    {
+        background-position:0% 50%
+    }
+  }
+
+  .wrap
+  {
+    position:relative;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    padding: 22px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.45));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(var(--glass-blur));
+    transform-origin:center;
+    animation: popIn 650ms cubic-bezier(.2,.85,.2,1);
+  }
+  @keyframes popIn
+  {
+    from
+    {
+        transform: translateY(20px) scale(.96);
+        opacity:0
+    }
+    to
+    {
+        transform: translateY(0) scale(1);
+        opacity:1
+    }
+  }
+
+  .top-row
+  {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .title
+  {
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .logo
+  {
+    width:44px;height:44px;border-radius:10px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    display:flex;align-items:center;justify-content:center;
+    color:white;font-weight:700;font-size:18px;
+  }
+  .title h1
+  {
+    font-size:16px;margin:0
+  }
+  .subtitle
+  {
+    font-size:11px;color:rgba(0,0,0,0.55)
+  }
+
+  .controls
+  {
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .icon-btn
+  {
+    border:none;
+    background:transparent;
+    padding:8px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:transform .12s ease, background .12s;
+  }
+  .icon-btn:active
+  {
+    transform:scale(.95)
+  }
+  .icon-btn:hover
+  {
+    background: rgba(0,0,0,0.06)
+  }
+
+  .screen
+  {
+    width:100%;
+    height:86px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.9));
+    color: #b9ffbe;
+    font-family: "Courier New", monospace;
+    font-size:28px;
+    padding:12px 16px;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    margin-bottom:14px;
+    box-shadow: inset 0 -6px 18px rgba(0,0,0,0.4);
+  }
+  .screen .prev
+  {
+    color: rgba(185,255,190,0.6);
+    font-size:12px;
+    text-align:right;
+  }
+  .screen input
+  {
+    background:transparent;border:none;outline:none;color:var(--text-light);
+    font-size:28px;text-align:right;width:100%;
+  }
+
+  .pad
+  {
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:10px;
+  }
+  button.key
+  {
+    padding:16px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:600;
+    border:none;
+    cursor:pointer;
+    transition: transform .09s ease, box-shadow .12s ease;
+    box-shadow: 0 6px 18px rgba(10,10,10,0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    color:var(--text-dark);
+  }
+  button.key:active
+  {
+    transform: translateY(2px) scale(.98);
+  }
+
+  .op
+  {
+    background: linear-gradient(180deg,var(--accent-2), #ff8533);
+    color:white;
+  }
+  .eq
+  {
+    background: linear-gradient(180deg,var(--accent), #10ac84);
+    color:white;
+    grid-column: span 2;
+  }
+  .clear
+  {
+    background: linear-gradient(180deg,var(--error), #d63031);
+    color:white;
+  }
+  .func
+  {
+    background: linear-gradient(180deg,#f0f0f0,#eaeaea);
+    color:var(--text-dark);
+  }
+
+  .zero
+  {
+    grid-column: span 2;
+  }
+
+  .help-row
+  {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:12px;
+    gap:8px;
+  }
+  .help-row button
+  {
+    padding:8px 12px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+  }
+
+  .history-panel
+  {
+    position:fixed;
+    top:50%;
+    right:-420px;
+    transform:translateY(-50%);
+    width:380px;
+    max-width:calc(100vw - 24px);
+    height:78vh;
+    background:var(--panel-bg);
+    border-radius:14px 0 0 14px;
+    box-shadow: 0 18px 60px rgba(0,0,0,0.25);
+    border-left: 1px solid rgba(0,0,0,0.06);
+    padding:14px;
+    transition: right .35s cubic-bezier(.2,.9,.25,1);
+    overflow:hidden;
+    display:flex;flex-direction:column;
+    z-index:9999;
+    backdrop-filter: blur(6px);
+  }
+  .history-panel.open
+  {
+    right: 12px;
+  }
+
+  .history-head
+  {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .history-list
+  {
+    overflow:auto;
+    flex:1;
+    padding-right:6px;
+  }
+  .history-item
+  {
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:8px;
+    background: rgba(0,0,0,0.03);
+    font-size:14px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .history-item .expr
+  {
+    color: rgba(0,0,0,0.7);
+    font-weight:600;
+  }
+  .history-item .time
+  {
+    font-size:11px;
+    color: rgba(0,0,0,0.45);
+    margin-left:8px;
+  }
+
+  .history-foot
+  {
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+  }
+
+  @media (max-width:420px)
+  {
+    .wrap
+    {
+        width: 100%;
+        padding: 16px;
+        border-radius:12px;
+    }
+    .screen
+    {
+        height:82px;
+    }
+    .history-panel
+    {
+        width:320px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap" role="application" aria-label="Animated Calculator">
+  <div class="top-row">
+    <div class="title">
+      <div class="logo">CALC</div>
+      <div>
+        <h1 style="margin:0;font-size:15px">Animated Calculator</h1>
+        <div style="font-size:11px;color:rgba(0,0,0,0.55)">Ganesh Prasad • 4MW23CS040</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="icon-btn" id="darkToggle" title="Dark / Light mode" aria-label="Toggle dark mode">🌓</button>
+      <button class="icon-btn" id="histToggle" title="Open history" aria-label="Open history">📜</button>
+      <button class="icon-btn" id="soundToggle" title="Toggle sound" aria-label="Toggle sound">🔊</button>
+    </div>
+  </div>
+
+  <div class="screen" role="region" aria-label="Calculator display">
+    <div class="prev" id="prevExpression"></div>
+    <input id="display" aria-live="polite" autocomplete="off" inputmode="decimal" />
+  </div>
+
+  <div class="pad" aria-hidden="false">
+    <button class="key clear" data-key="Clear" title="Clear (AC)" onclick="clearAll()">AC</button>
+    <button class="key func" data-key="Bksp" title="Backspace" onclick="backspace()">⌫</button>
+    <button class="key func" data-key="%" title="Percent" onclick="pressOp('%')">%</button>
+    <button class="key op" data-key="/" title="Divide" onclick="pressOp('/')">÷</button>
+
+    <button class="key num" data-key="7" onclick="pressNum('7')">7</button>
+    <button class="key num" data-key="8" onclick="pressNum('8')">8</button>
+    <button class="key num" data-key="9" onclick="pressNum('9')">9</button>
+    <button class="key op" data-key="*" onclick="pressOp('*')">×</button>
+
+    <button class="key num" data-key="4" onclick="pressNum('4')">4</button>
+    <button class="key num" data-key="5" onclick="pressNum('5')">5</button>
+    <button class="key num" data-key="6" onclick="pressNum('6')">6</button>
+    <button class="key op" data-key="-" onclick="pressOp('-')">−</button>
+
+    <button class="key num" data-key="1" onclick="pressNum('1')">1</button>
+    <button class="key num" data-key="2" onclick="pressNum('2')">2</button>
+    <button class="key num" data-key="3" onclick="pressNum('3')">3</button>
+    <button class="key op" data-key="+" onclick="pressOp('+')">+</button>
+
+    <button class="key num zero" data-key="0" onclick="pressNum('0')">0</button>
+    <button class="key num" data-key="." onclick="pressNum('.')">.</button>
+    <button class="key func" data-key="sqr" title="Square" onclick="square()">x²</button>
+    <button class="key func" data-key="sqrt" title="Square root" onclick="squareRoot()">√</button>
+
+    <button class="key func" data-key="±" title="Toggle sign" onclick="toggleSign()">±</button>
+    <button class="key func" data-key="^" title="Power" onclick="pressOp('^')">xʸ</button>
+    <button class="key eq" data-key="=" title="Equals" onclick="calculate()">=</button>
+  </div>
+
+  <div class="help-row">
+    <div style="font-size:12px;color:rgba(0,0,0,0.55)">Tip: use keyboard (numbers, + - * / , Enter =)</div>
+    <div>
+      <button onclick="copyDisplay()">Copy</button>
+      <button onclick="exportHistory()">Export</button>
+    </div>
+  </div>
+</div>
+
+<div class="history-panel" id="historyPanel" aria-hidden="true" role="region" aria-label="Calculation history">
+  <div class="history-head">
+    <div style="font-weight:700">History</div>
+    <div style="display:flex;gap:8px">
+      <button onclick="clearHistory()" title="Clear history">Clear</button>
+      <button onclick="closeHistory()" title="Close">Close</button>
+    </div>
+  </div>
+
+  <div class="history-list" id="historyList" aria-live="polite"></div>
+
+  <div class="history-foot">
+    <button onclick="exportHistory()">Download CSV</button>
+    <button onclick="pasteIntoCalculator()">Paste Last</button>
+  </div>
+</div>
+
+<script>
+let current = "";
+let previous = "";
+let op = "";
+let history = [];
+let soundOn = true;
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function playClick()
+{
+  if (!soundOn) return;
+  if (!audioCtx) audioCtx = new AudioCtx();
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = 'sine';
+  o.frequency.value = 880;
+  g.gain.value = 0.02;
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start();
+  setTimeout(()=>
+  {
+      o.stop();
+  }, 80);
+}
+
+const display = document.getElementById('display');
+const prevExp = document.getElementById('prevExpression');
+const historyPanel = document.getElementById('historyPanel');
+const historyList = document.getElementById('historyList');
+const histToggle = document.getElementById('histToggle');
+const darkToggle = document.getElementById('darkToggle');
+const soundToggle = document.getElementById('soundToggle');
+
+display.value = "";
+attachKeyboard();
+
+function render()
+{
+  display.value = current || previous || "0";
+  prevExp.textContent = previous && op ? `${previous} ${op}` : "";
+  playClick();
+}
+
+function pressNum(n)
+{
+  if (n === '.' && current.includes('.')) return;
+  if (n === '.' && current === '') current = '0';
+  current = (current === '0' && n !== '.') ? n : current + n;
+  render();
+}
+
+function pressOp(o)
+{
+  if (current === "" && previous === "") return;
+  if (current !== "" && previous !== "" && op)
+  {
+    calculate();
+  }
+  if (current !== "")
+  {
+    previous = current;
+    current = "";
+  }
+  op = o;
+  render();
+}
+
+function calculate()
+{
+  if (!op) return;
+  if (previous === "" && current === "") return;
+  const a = parseFloat(previous || "0");
+  const b = parseFloat(current || previous || "0");
+
+  let res;
+  switch(op)
+  {
+    case '+':
+      res = a + b;
+      break;
+    case '-':
+      res = a - b;
+      break;
+    case '*':
+      res = a * b;
+      break;
+    case '/':
+      res = (b === 0) ? "Err" : a / b;
+      break;
+    case '%':
+      res = a % b;
+      break;
+    case '^':
+      res = Math.pow(a, b);
+      break;
+    default:
+      res = "Err";
+  }
+
+  pushHistory(`${a} ${op} ${b}`, res);
+  previous = (res === "Err") ? "" : String(roundResult(res));
+  current = "";
+  op = "";
+  render();
+}
+
+function square()
+{
+  const x = current || previous;
+  if (!x) return;
+  const val = Math.pow(parseFloat(x), 2);
+  pushHistory(`${x}²`, val);
+  current = String(roundResult(val));
+  previous = "";
+  op = "";
+  render();
+}
+function squareRoot()
+{
+  const x = current || previous;
+  if (!x) return;
+  const val = Math.sqrt(parseFloat(x));
+  pushHistory(`√(${x})`, val);
+  current = String(roundResult(val));
+  previous = "";
+  op = "";
+  render();
+}
+function toggleSign()
+{
+  if (current)
+  {
+      current = String(parseFloat(current) * -1);
+  }
+  else if (previous)
+  {
+      previous = String(parseFloat(previous) * -1);
+  }
+  render();
+}
+function clearAll()
+{
+  previous = ""; current = ""; op = "";
+  render();
+}
+function backspace()
+{
+  if (current)
+  {
+    current = current.slice(0, -1);
+  }
+  else if (op)
+  {
+    op = "";
+  }
+  else if (previous)
+  {
+    previous = previous.slice(0, -1);
+  }
+  render();
+}
+
+function roundResult(x)
+{
+  if (typeof x !== 'number' || !isFinite(x)) return x;
+  return Math.round(x * 1e12) / 1e12;
+}
+
+function pushHistory(expr, result)
+{
+  const time = new Date();
+  const item = { expr: String(expr), result: String(result), time: time.toISOString() };
+  history.unshift(item);
+  if (history.length > 200) history.pop();
+  renderHistory();
+}
+
+function renderHistory()
+{
+  historyList.innerHTML = '';
+  if (history.length === 0)
+  {
+    historyList.innerHTML = '<div style="color:rgba(0,0,0,0.45);padding:12px">No history yet</div>';
+    return;
+  }
+  history.forEach((h, idx) =>
+  {
+    const d = new Date(h.time);
+    const time = d.toLocaleString();
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML = `<div>
+        <div class="expr">${escapeHtml(h.expr)} = <strong>${escapeHtml(h.result)}</strong></div>
+        <div class="time">${time}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <button onclick="copyText(${idx})" style="padding:6px 8px;border-radius:6px">Copy</button>
+        <button onclick="removeHistory(${idx})" style="padding:6px 8px;border-radius:6px">Del</button>
+      </div>`;
+    historyList.appendChild(div);
+  });
+}
+function removeHistory(index)
+{
+  history.splice(index,1);
+  renderHistory();
+}
+function clearHistory()
+{
+  history = [];
+  renderHistory();
+}
+function copyText(idx)
+{
+  const h = history[idx];
+  const txt = `${h.expr} = ${h.result}`;
+  navigator.clipboard?.writeText(txt).then(()=>alert('Copied: ' + txt), ()=>alert('Copy failed'));
+}
+function escapeHtml(s)
+{
+    return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+histToggle.addEventListener('click', ()=>
+{
+    toggleHistory();
+});
+function toggleHistory()
+{
+  const open = historyPanel.classList.toggle('open');
+  historyPanel.setAttribute('aria-hidden', !open);
+  if (open)
+  {
+      renderHistory();
+  }
+}
+function closeHistory()
+{
+    historyPanel.classList.remove('open');
+    historyPanel.setAttribute('aria-hidden','true');
+}
+
+function copyDisplay()
+{
+    navigator.clipboard?.writeText(display.value||'0').then(()=>alert('Copied display value'), ()=>alert('Copy failed'));
+}
+
+function exportHistory()
+{
+  if (history.length === 0)
+  {
+      alert('History empty');
+      return;
+  }
+  const rows = [['Expression','Result','ISO Time']];
+  history.slice().reverse().forEach(h => rows.push([h.expr, h.result, h.time]));
+  const csv = rows.map(r => r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'calculator_history.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function pasteIntoCalculator()
+{
+  if (history.length === 0) return alert('No history to paste');
+  const last = history[0];
+  current = last.result;
+  render();
+  closeHistory();
+}
+
+function attachKeyboard()
+{
+  window.addEventListener('keydown', (e)=>
+  {
+    if (e.key >= '0' && e.key <= '9')
+    {
+        pressNum(e.key);
+        e.preventDefault();
+    }
+    else if (e.key === '.')
+    {
+        pressNum('.');
+        e.preventDefault();
+    }
+    else if (e.key === 'Enter' || e.key === '=')
+    {
+        calculate();
+        e.preventDefault();
+    }
+    else if (e.key === 'Backspace')
+    {
+        backspace();
+        e.preventDefault();
+    }
+    else if (e.key === 'Escape')
+    {
+        clearAll();
+        e.preventDefault();
+    }
+    else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/')
+    {
+        pressOp(e.key);
+        e.preventDefault();
+    }
+    else if (e.key === '%')
+    {
+        pressOp('%');
+        e.preventDefault();
+    }
+  });
+}
+
+soundToggle.addEventListener('click', ()=>
+{
+  soundOn = !soundOn;
+  soundToggle.textContent = soundOn ? '🔊' : '🔈';
+});
+darkToggle.addEventListener('click', ()=>
+{
+  document.documentElement.classList.toggle('dark');
+});
+
+function copyDisplay()
+{
+    navigator.clipboard?.writeText(display.value || '0').then(()=>{}, ()=>{});
+}
+
+window.addEventListener('beforeunload', ()=>
+{
+  try
+  {
+      localStorage.setItem('calc_history', JSON.stringify(history));
+      localStorage.setItem('calc_state', JSON.stringify({current, previous, op}));
+  }
+  catch(e){}
+});
+window.addEventListener('load', ()=>
+{
+  try
+  {
+    const raw = localStorage.getItem('calc_history');
+    if (raw) history = JSON.parse(raw);
+    const st = JSON.parse(localStorage.getItem('calc_state') || '{}');
+    current = st.current || current;
+    previous = st.previous || previous;
+    op = st.op || op;
+  }
+  catch(e){}
+  render(); renderHistory();
+});
+
+window.copyText = function(idx)
+{
+    copyText(idx);
+};
+window.removeHistory = function(idx)
+{
+    removeHistory(idx);
+};
+
+document.addEventListener('click', (ev)=>
+{
+  if (!historyPanel.classList.contains('open')) return;
+  const inside = historyPanel.contains(ev.target) || histToggle.contains(ev.target);
+  if (!inside) closeHistory();
+});
+
+render();
+
+</script>
+</body>
+</html>

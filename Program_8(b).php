@@ -49,9 +49,11 @@ for ($i = 0; $i < count($students) - 1; $i++)
 foreach ($students as $student) 
 {
     echo 
-        "<tr><td>{$student['id']}</td>
-        <td>{$student['name']}</td>
-        <td>{$student['grade']}</td></tr>";
+        "<tr>
+            <td>{$student['id']}</td>
+            <td>{$student['name']}</td>
+            <td>{$student['grade']}</td>
+        </tr>";
 }
  $conn->close();
  ?>

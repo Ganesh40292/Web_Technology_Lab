@@ -30,7 +30,10 @@ th
 <body>
 <h1>Sorted Student Records</h1>
 <table>
-<tr><th>ID</th><th>Name</th><th>Grade</th></tr>
+<tr>
+    <th> ID </th>
+    <th> Name </th>
+    <th> Grade </th></tr>
 <?php
 $conn = new mysqli("localhost", "root", "1239", "students1234");
 $students = $conn->query("SELECT * FROM students1234.students124;")->fetch_all(MYSQLI_ASSOC);

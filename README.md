@@ -1,6 +1,3 @@
-Perfect 👍
-Below is a **complete, professional, VTU-specific GitHub README** with **syllabus merged**, **clear folder mapping**, and **clean formatting**.
-You can **copy–paste this directly as `README.md`**.
 
 ---
 
